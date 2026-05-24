@@ -96,6 +96,14 @@ def apply_layout_styles() -> None:
             display: none;
         }
 
+        [data-testid="stStatusWidget"],
+        [data-testid="stDecoration"],
+        #MainMenu,
+        footer {
+            display: none !important;
+            visibility: hidden !important;
+        }
+
         [data-testid="stAppViewContainer"] {
             min-width: 1440px;
         }
