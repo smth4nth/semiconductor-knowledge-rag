@@ -34,26 +34,26 @@ def apply_layout_styles() -> None:
             --primary-foreground: #111111;
             --background: #F2F3F0;
             --foreground: #111111;
-            --muted-foreground: #666666;
+            --muted-foreground: #111111;
             --card: #FFFFFF;
             --border: #CBCCC9;
             --sidebar: #E7E8E5;
             --sidebar-border: #CBCCC9;
             --sidebar-accent: #CBCCC9;
-            --sidebar-foreground: #666666;
+            --sidebar-foreground: #111111;
             --sidebar-accent-foreground: #18181B;
             --secondary: #E7E8E5;
             --muted: #F2F3F0;
             --user-bubble: #EFF6FF;
-            --user-bubble-text: #1E40AF;
+            --user-bubble-text: #111111;
             --assistant-bubble: #FFFFFF;
             --assistant-bubble-border: #CBCCC9;
             --success-bg: #DFE6E1;
-            --success-text: #004D1A;
+            --success-text: #111111;
             --warning-bg: #E9E3D8;
-            --warning-text: #804200;
+            --warning-text: #111111;
             --error-bg: #E5DCDA;
-            --error-text: #8C1C00;
+            --error-text: #111111;
         }
 
         html,
@@ -65,7 +65,23 @@ def apply_layout_styles() -> None:
         }
 
         .stApp {
-            color: var(--foreground);
+            color: var(--foreground) !important;
+        }
+
+        .stApp p,
+        .stApp span,
+        .stApp div,
+        .stApp label,
+        .stApp a,
+        .stApp h1,
+        .stApp h2,
+        .stApp h3,
+        .stApp th,
+        .stApp td,
+        .stApp textarea,
+        .stApp button,
+        .stApp input {
+            color: var(--foreground) !important;
         }
 
         .stApp {
@@ -171,7 +187,7 @@ def apply_layout_styles() -> None:
         }
 
         .sidebar-profile span {
-            color: var(--sidebar-foreground);
+            color: var(--foreground);
             display: block;
         }
 
@@ -243,46 +259,6 @@ def apply_layout_styles() -> None:
             margin: 0;
         }
 
-        .upload-zone {
-            align-items: center;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            height: 160px;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .upload-zone-title {
-            color: var(--foreground);
-            font-family: "JetBrains Mono", Geist, "Noto Sans SC", "Microsoft YaHei", sans-serif;
-            font-size: 15px;
-            font-weight: 500;
-            line-height: 22px;
-        }
-
-        .upload-zone-hint {
-            color: var(--muted-foreground);
-            font-size: 12px;
-            line-height: 17px;
-        }
-
-        .upload-zone-button {
-            align-items: center;
-            background: var(--primary);
-            border-radius: 999px;
-            color: var(--primary-foreground);
-            display: inline-flex;
-            font-size: 14px;
-            font-weight: 600;
-            height: 40px;
-            margin-top: 6px;
-            padding: 10px 16px;
-        }
-
         .section-heading {
             color: var(--foreground) !important;
             font-family: "JetBrains Mono", Geist, "Noto Sans SC", "Microsoft YaHei", sans-serif !important;
@@ -293,7 +269,13 @@ def apply_layout_styles() -> None:
         }
 
         [data-testid="stFileUploader"] {
-            display: none;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            height: 160px;
+            margin: 0;
+            padding: 0;
+            width: 100%;
         }
 
         [data-testid="stFileUploader"] *,
@@ -303,8 +285,63 @@ def apply_layout_styles() -> None:
         }
 
         [data-testid="stFileUploader"] section {
-            border: none;
-            padding: 0;
+            align-items: center;
+            background: transparent;
+            border: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            height: 160px;
+            justify-content: center;
+            min-height: 160px;
+            width: 100%;
+        }
+
+        [data-testid="stFileUploaderDropzone"] {
+            align-items: center;
+            background: transparent !important;
+            border: 0 !important;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            height: 160px !important;
+            justify-content: center;
+            min-height: 160px !important;
+            width: 100% !important;
+        }
+
+        [data-testid="stFileUploaderDropzone"] > div {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        [data-testid="stFileUploaderDropzone"] [data-testid="stMarkdownContainer"] p {
+            font-family: "JetBrains Mono", Geist, "Noto Sans SC", "Microsoft YaHei", sans-serif !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            line-height: 22px !important;
+        }
+
+        [data-testid="stFileUploaderDropzone"] small {
+            color: var(--foreground) !important;
+            font-size: 12px !important;
+            line-height: 17px !important;
+        }
+
+        [data-testid="stFileUploaderDropzone"] button {
+            background: var(--primary) !important;
+            border: 0 !important;
+            border-radius: 999px !important;
+            color: var(--primary-foreground) !important;
+            font-family: "JetBrains Mono", Geist, "Noto Sans SC", "Microsoft YaHei", sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            height: 40px !important;
+            padding: 10px 16px !important;
         }
 
         .stButton > button,
@@ -391,7 +428,7 @@ def apply_layout_styles() -> None:
 
         .type-pill.type-hauler {
             background: #DFDFE6;
-            color: #000066;
+            color: var(--foreground);
         }
 
         .type-pill.type-spec {
@@ -411,7 +448,7 @@ def apply_layout_styles() -> None:
             display: flex;
             flex-direction: column;
             gap: 24px;
-            height: 868px;
+            height: 216px;
             width: 100%;
         }
 
@@ -424,6 +461,18 @@ def apply_layout_styles() -> None:
         }
 
         .upload-screen .section-header {
+            margin: 0;
+        }
+
+        .upload-rest {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 24px;
+            width: 100%;
+        }
+
+        .upload-rest .section-header {
             margin: 0;
         }
 
@@ -472,7 +521,7 @@ def apply_layout_styles() -> None:
         }
 
         .design-filter em {
-            color: var(--muted-foreground);
+            color: var(--foreground);
             font-size: 12px;
             font-style: normal;
             margin-left: -34px;
@@ -496,6 +545,11 @@ def apply_layout_styles() -> None:
             line-height: 1.6;
             margin-bottom: 16px;
             padding: 12px 16px;
+        }
+
+        [data-testid="stChatMessageAvatarUser"],
+        [data-testid="stChatMessageAvatarAssistant"] {
+            display: none !important;
         }
 
         [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
@@ -583,11 +637,6 @@ def apply_layout_styles() -> None:
             padding: 20px;
         }
 
-        .element-container:has(.upload-zone) + .element-container {
-            height: 0;
-            overflow: hidden;
-        }
-
         .element-container:has(.chat-topbar),
         .element-container:has(.chat-surface) {
             margin-left: -32px;
@@ -619,9 +668,6 @@ def handle_upload(uploaded_files: list[Any], collection: Any, registry: dict[str
         return
 
     upload_dir.mkdir(parents=True, exist_ok=True)
-    if not st.button("上传文件", type="primary"):
-        return
-
     results: list[tuple[str, str]] = []
     for uploaded_file in uploaded_files:
         destination = upload_dir / uploaded_file.name
@@ -772,10 +818,6 @@ def render_upload_page(collection: Any, config: dict[str, Any], registry: dict[s
                 <div class="upload-zone-hint">支持 PDF / Word / Excel 格式</div>
                 <div class="upload-zone-button">上传文件</div>
             </div>
-            <div class="section-header">
-                <h2 class="section-heading">已入库文档</h2>
-            </div>
-            {build_registered_docs_table(load_registry(REGISTRY_PATH))}
         </div>
         """
     )
@@ -787,6 +829,16 @@ def render_upload_page(collection: Any, config: dict[str, Any], registry: dict[s
         label_visibility="collapsed",
     )
     handle_upload(uploaded_files, collection, registry, config["UPLOAD_DIR"])
+    st.html(
+        f"""
+        <div class="upload-rest">
+            <div class="section-header">
+                <h2 class="section-heading">已入库文档</h2>
+            </div>
+            {build_registered_docs_table(load_registry(REGISTRY_PATH))}
+        </div>
+        """
+    )
 
 
 def render_search_page(collection: Any, config: dict[str, Any], registry: dict[str, Any]) -> None:
