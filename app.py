@@ -176,21 +176,6 @@ def apply_layout_styles() -> None:
             width: 248px;
         }
 
-        .sidebar-profile {
-            color: var(--sidebar-accent-foreground);
-            font-size: 16px;
-            line-height: 24px;
-            padding: 24px 16px;
-            position: fixed;
-            top: 800px;
-            width: 280px;
-        }
-
-        .sidebar-profile span {
-            color: var(--foreground);
-            display: block;
-        }
-
         [data-testid="stSidebar"] .stRadio > div {
             gap: 0;
             padding: 0 16px;
@@ -272,8 +257,8 @@ def apply_layout_styles() -> None:
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 12px;
-            height: 160px;
             margin: 0;
+            min-height: 160px;
             padding: 0;
             width: 100%;
         }
@@ -317,31 +302,81 @@ def apply_layout_styles() -> None:
             flex-direction: column;
             gap: 10px;
             justify-content: center;
+            min-width: 0;
         }
 
+        [data-testid="stFileUploaderDropzoneInstructions"] > div {
+            align-items: center !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 4px !important;
+        }
+
+        [data-testid="stFileUploaderDropzoneInstructions"] > div > span:first-child,
         [data-testid="stFileUploaderDropzone"] [data-testid="stMarkdownContainer"] p {
             font-family: "JetBrains Mono", Geist, "Noto Sans SC", "Microsoft YaHei", sans-serif !important;
-            font-size: 15px !important;
+            font-size: 0 !important;
             font-weight: 500 !important;
             line-height: 22px !important;
         }
 
+        [data-testid="stFileUploaderDropzoneInstructions"] > div > span:first-child::before,
+        [data-testid="stFileUploaderDropzone"] [data-testid="stMarkdownContainer"] p::before {
+            content: "拖拽文件至此或点击上传";
+            color: var(--foreground) !important;
+            font-size: 15px !important;
+            line-height: 22px !important;
+        }
+
+        [data-testid="stFileUploaderDropzoneInstructions"] > div > span:nth-child(2),
         [data-testid="stFileUploaderDropzone"] small {
+            color: var(--foreground) !important;
+            font-size: 0 !important;
+            line-height: 17px !important;
+        }
+
+        [data-testid="stFileUploaderDropzoneInstructions"] > div > span:nth-child(2)::before,
+        [data-testid="stFileUploaderDropzone"] small::before {
+            content: "单个文件上限 200MB · 支持 PDF、DOCX、DOC、XLSX、XLS";
             color: var(--foreground) !important;
             font-size: 12px !important;
             line-height: 17px !important;
         }
 
         [data-testid="stFileUploaderDropzone"] button {
+            align-items: center !important;
             background: var(--primary) !important;
             border: 0 !important;
             border-radius: 999px !important;
-            color: var(--primary-foreground) !important;
+            color: transparent !important;
+            display: inline-flex !important;
             font-family: "JetBrains Mono", Geist, "Noto Sans SC", "Microsoft YaHei", sans-serif !important;
-            font-size: 14px !important;
+            font-size: 0 !important;
             font-weight: 500 !important;
             height: 40px !important;
+            justify-content: center !important;
+            line-height: 20px !important;
+            min-width: 96px !important;
             padding: 10px 16px !important;
+            white-space: nowrap !important;
+            width: auto !important;
+        }
+
+        [data-testid="stFileUploaderDropzone"] button::after {
+            content: "选择文件";
+            color: var(--primary-foreground) !important;
+            font-size: 14px !important;
+            line-height: 20px !important;
+        }
+
+        [data-testid="stFileUploaderDropzone"] button p {
+            font-size: 0 !important;
+            margin: 0 !important;
+            white-space: nowrap !important;
+        }
+
+        [data-testid="stFileUploaderDropzone"] [data-testid="stWidgetLabel"] {
+            display: none;
         }
 
         .stButton > button,
@@ -447,8 +482,7 @@ def apply_layout_styles() -> None:
         .upload-screen {
             display: flex;
             flex-direction: column;
-            gap: 24px;
-            height: 216px;
+            gap: 16px;
             width: 100%;
         }
 
@@ -462,6 +496,10 @@ def apply_layout_styles() -> None:
 
         .upload-screen .section-header {
             margin: 0;
+        }
+
+        .element-container:has(.upload-screen) + .element-container {
+            margin-top: 16px;
         }
 
         .upload-rest {
@@ -813,11 +851,6 @@ def render_upload_page(collection: Any, config: dict[str, Any], registry: dict[s
                 <h1>文档上传</h1>
                 <p>上传并管理半导体工艺相关文档</p>
             </div>
-            <div class="upload-zone">
-                <div class="upload-zone-title">拖拽文件至此或点击上传</div>
-                <div class="upload-zone-hint">支持 PDF / Word / Excel 格式</div>
-                <div class="upload-zone-button">上传文件</div>
-            </div>
         </div>
         """
     )
@@ -888,7 +921,7 @@ def render_sidebar() -> str:
                 <span class="app-brand-icon"></span>
                 <span>LUNARIS</span>
             </div>
-            <div class="sidebar-section-title">Title</div>
+            <div class="sidebar-section-title">知识库工作台</div>
             """,
             unsafe_allow_html=True,
         )
@@ -898,15 +931,6 @@ def render_sidebar() -> str:
             index=page_options.index(page),
             key="active_page",
             label_visibility="collapsed",
-        )
-        st.markdown(
-            """
-            <div class="sidebar-profile">
-                <div>Joe Doe</div>
-                <span>joe@acmecorp.com</span>
-            </div>
-            """,
-            unsafe_allow_html=True,
         )
         return page
 
