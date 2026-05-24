@@ -254,11 +254,7 @@ def apply_layout_styles() -> None:
         }
 
         [data-testid="stFileUploader"] {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
             margin: 0;
-            min-height: 160px;
             padding: 0;
             width: 100%;
         }
@@ -271,8 +267,9 @@ def apply_layout_styles() -> None:
 
         [data-testid="stFileUploader"] section {
             align-items: center;
-            background: transparent;
-            border: 0;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -305,53 +302,15 @@ def apply_layout_styles() -> None:
             min-width: 0;
         }
 
-        [data-testid="stFileUploaderDropzoneInstructions"] > div {
-            align-items: center !important;
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 4px !important;
-        }
-
-        [data-testid="stFileUploaderDropzoneInstructions"] > div > span:first-child,
-        [data-testid="stFileUploaderDropzone"] [data-testid="stMarkdownContainer"] p {
-            font-family: "JetBrains Mono", Geist, "Noto Sans SC", "Microsoft YaHei", sans-serif !important;
-            font-size: 0 !important;
-            font-weight: 500 !important;
-            line-height: 22px !important;
-        }
-
-        [data-testid="stFileUploaderDropzoneInstructions"] > div > span:first-child::before,
-        [data-testid="stFileUploaderDropzone"] [data-testid="stMarkdownContainer"] p::before {
-            content: "拖拽文件至此或点击上传";
-            color: var(--foreground) !important;
-            font-size: 15px !important;
-            line-height: 22px !important;
-        }
-
-        [data-testid="stFileUploaderDropzoneInstructions"] > div > span:nth-child(2),
-        [data-testid="stFileUploaderDropzone"] small {
-            color: var(--foreground) !important;
-            font-size: 0 !important;
-            line-height: 17px !important;
-        }
-
-        [data-testid="stFileUploaderDropzoneInstructions"] > div > span:nth-child(2)::before,
-        [data-testid="stFileUploaderDropzone"] small::before {
-            content: "单个文件上限 200MB · 支持 PDF、DOCX、DOC、XLSX、XLS";
-            color: var(--foreground) !important;
-            font-size: 12px !important;
-            line-height: 17px !important;
-        }
-
         [data-testid="stFileUploaderDropzone"] button {
             align-items: center !important;
             background: var(--primary) !important;
             border: 0 !important;
             border-radius: 999px !important;
-            color: transparent !important;
+            color: var(--primary-foreground) !important;
             display: inline-flex !important;
             font-family: "JetBrains Mono", Geist, "Noto Sans SC", "Microsoft YaHei", sans-serif !important;
-            font-size: 0 !important;
+            font-size: 14px !important;
             font-weight: 500 !important;
             height: 40px !important;
             justify-content: center !important;
@@ -362,21 +321,12 @@ def apply_layout_styles() -> None:
             width: auto !important;
         }
 
-        [data-testid="stFileUploaderDropzone"] button::after {
-            content: "选择文件";
+        [data-testid="stFileUploaderDropzone"] button p {
             color: var(--primary-foreground) !important;
             font-size: 14px !important;
             line-height: 20px !important;
-        }
-
-        [data-testid="stFileUploaderDropzone"] button p {
-            font-size: 0 !important;
             margin: 0 !important;
             white-space: nowrap !important;
-        }
-
-        [data-testid="stFileUploaderDropzone"] [data-testid="stWidgetLabel"] {
-            display: none;
         }
 
         .stButton > button,
@@ -859,7 +809,6 @@ def render_upload_page(collection: Any, config: dict[str, Any], registry: dict[s
         help="支持 PDF / Word / Excel",
         type=["pdf", "docx", "doc", "xlsx", "xls"],
         accept_multiple_files=True,
-        label_visibility="collapsed",
     )
     handle_upload(uploaded_files, collection, registry, config["UPLOAD_DIR"])
     st.html(
@@ -876,20 +825,17 @@ def render_upload_page(collection: Any, config: dict[str, Any], registry: dict[s
 
 def render_search_page(collection: Any, config: dict[str, Any], registry: dict[str, Any]) -> None:
     """Render the retrieval filter and chat page."""
-    st.markdown(
-        """
-        <div class="chat-topbar">
-            <div class="chat-title">🔍 知识检索</div>
-            <div class="design-filter">
-                <span>文档类型</span>
-                <strong>全部</strong>
-                <em>▾</em>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    doc_type_filter = None
+    topbar_title, topbar_filter = st.columns([4, 1])
+    with topbar_title:
+        st.markdown('<div class="chat-title">知识检索</div>', unsafe_allow_html=True)
+    with topbar_filter:
+        selected_doc_type = st.selectbox(
+            "文档类型",
+            DOC_TYPE_OPTIONS,
+            index=0,
+            key="doc_type_filter",
+        )
+    doc_type_filter = None if selected_doc_type == "全部" else selected_doc_type
 
     st.markdown('<div class="chat-surface">', unsafe_allow_html=True)
     render_chat(
@@ -906,7 +852,7 @@ def render_sidebar() -> str:
     if "page" in st.query_params:
         st.query_params.clear()
 
-    page_options = ["文档上传", "知识检索", "系统设置"]
+    page_options = ["文档上传", "知识检索"]
     page = st.session_state.get("active_page", "文档上传")
     if page not in page_options:
         page = "文档上传"
@@ -955,17 +901,6 @@ def main() -> None:
         render_upload_page(collection, config, load_registry(REGISTRY_PATH))
     elif page == "知识检索":
         render_search_page(collection, config, load_registry(REGISTRY_PATH))
-    else:
-        st.markdown(
-            """
-            <div class="page-title">
-                <h1>⚙️ 系统设置</h1>
-                <p>系统设置功能即将推出。</p>
-            </div>
-            <div class="empty-state">当前版本保留设置入口，上传和检索功能不受影响。</div>
-            """,
-            unsafe_allow_html=True,
-        )
 
 
 if __name__ == "__main__":
