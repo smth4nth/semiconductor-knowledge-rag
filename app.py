@@ -762,6 +762,12 @@ def render_registered_docs(registry: dict[str, Any]) -> None:
     st.html(build_registered_docs_table(registry))
 
 
+def render_ai_service_error(action: str, exc: Exception) -> None:
+    """Show deploy-friendly AI service errors without hiding the failing stage."""
+    st.error(f"AI 服务暂时不可用：{action}失败")
+    st.caption(f"{type(exc).__name__}: {exc}")
+
+
 def render_chat(collection: Any, config: dict[str, Any], doc_type_filter: str | None, has_documents: bool) -> None:
     """Render chat history, input box, retrieval, and streaming answer."""
     if "messages" not in st.session_state:
@@ -798,8 +804,8 @@ def render_chat(collection: Any, config: dict[str, Any], doc_type_filter: str | 
                     top_k=config["TOP_K"],
                     doc_type_filter=doc_type_filter,
                 )
-            except Exception:
-                st.error("AI 服务暂时不可用，请稍后再试")
+            except Exception as exc:
+                render_ai_service_error("检索", exc)
                 return
 
             if not contexts:
@@ -815,8 +821,8 @@ def render_chat(collection: Any, config: dict[str, Any], doc_type_filter: str | 
                 for delta in stream_chat(messages):
                     collected += delta
                     placeholder.markdown(collected)
-            except Exception:
-                st.error("AI 服务暂时不可用，请稍后再试")
+            except Exception as exc:
+                render_ai_service_error("生成回答", exc)
                 return
 
             st.session_state.messages.append({"role": "assistant", "content": collected})
