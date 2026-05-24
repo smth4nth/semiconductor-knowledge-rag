@@ -524,6 +524,19 @@ def apply_layout_styles() -> None:
             z-index: 1;
         }
 
+        [data-testid="stSelectbox"] [data-baseweb="select"] > div {
+            background: var(--background) !important;
+            border-color: var(--border) !important;
+            color: var(--foreground) !important;
+        }
+
+        [data-testid="stSelectbox"] svg,
+        [data-testid="stSelectbox"] svg path {
+            color: var(--primary) !important;
+            fill: var(--primary) !important;
+            stroke: var(--primary) !important;
+        }
+
         .chat-divider {
             display: none;
         }
@@ -618,11 +631,20 @@ def apply_layout_styles() -> None:
             color: var(--primary-foreground) !important;
         }
 
+        [data-testid="stChatInputSubmitButton"] * {
+            color: var(--primary-foreground) !important;
+        }
+
         [data-testid="stChatInputSubmitButton"] svg,
         [data-testid="stChatInputSubmitButton"] path {
             color: var(--primary-foreground) !important;
             fill: currentColor !important;
-            stroke: currentColor !important;
+            stroke: none !important;
+        }
+
+        [data-testid="stChatInputSubmitButton"] svg {
+            height: 18px !important;
+            width: 18px !important;
         }
 
         .empty-state {
