@@ -31,7 +31,7 @@ def apply_layout_styles() -> None:
         <style>
         :root {
             --primary: #FF8400;
-            --primary-foreground: #111111;
+            --primary-foreground: #FFFFFF;
             --background: #F2F3F0;
             --foreground: #111111;
             --muted-foreground: #111111;
