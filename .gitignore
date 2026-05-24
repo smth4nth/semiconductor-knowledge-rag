@@ -1,7 +1,4 @@
 .env
-chroma_db/
-data/uploads/
-data/registry.json
 __pycache__/
 *.pyc
 .pytest_cache/
